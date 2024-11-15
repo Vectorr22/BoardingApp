@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.vector.onBoardViews.dataStore.StoreBoarding
+import kotlinx.coroutines.launch
 
 @Composable
 fun ButtonFinish(
@@ -19,6 +21,7 @@ fun ButtonFinish(
     navController: NavController,
     storeBoarding: StoreBoarding
 ) {
+    val corroutineScope = rememberCoroutineScope()
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -27,7 +30,12 @@ fun ButtonFinish(
     ) {
 
         if (currentPage == 2) {
-            OutlinedButton(onClick = { navController.navigate("home"){popUpTo(0)} }) {
+            OutlinedButton(onClick = {
+                navController.navigate("home"){popUpTo(0)}
+                corroutineScope.launch {
+                    storeBoarding.saveBoarding(true)
+                }
+            }) {
                 Text(
                     text = "Entrar", modifier = Modifier
                         .padding(

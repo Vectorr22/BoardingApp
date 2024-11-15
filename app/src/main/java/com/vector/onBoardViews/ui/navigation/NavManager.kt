@@ -10,13 +10,17 @@ import androidx.navigation.compose.rememberNavController
 import com.vector.onBoardViews.OnBoardViews.MainOnBoarding
 import com.vector.onBoardViews.dataStore.StoreBoarding
 import com.vector.onBoardViews.ui.components.HomeView
+import com.vector.onBoardViews.ui.components.SplashScreen
 
 @Composable
 fun NavManager() {
     val navController = rememberNavController()
     val dataStore = StoreBoarding(context = LocalContext.current)
     val store = dataStore.getStoreBoarding.collectAsState(initial = false)
-    NavHost(navController = navController, startDestination = if(store.value == true) "home" else "onBoarding" ){
+    NavHost(navController = navController, startDestination = if(store.value == true) "home" else "Splash" ){
+        composable("Splash"){
+            SplashScreen(navController = navController, store = store.value)
+        }
         composable("onBoarding"){
             MainOnBoarding(navController = navController, storeBoarding = dataStore)
         }
